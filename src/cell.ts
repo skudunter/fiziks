@@ -1,10 +1,11 @@
 import { vector } from "./types";
+import { addVec, subVec, multVec, ZERO } from "./utils";
 
 // Cell class implemetning all the physics logic
+
 class Cell {
   positionCurrent: vector;
   positionPrevious: vector;
-  velocity: vector = { x: 0, y: 0 };
   acceleration: vector = { x: 0, y: 0 };
   constructor(
     public startX: number,
@@ -20,11 +21,39 @@ class Cell {
     this.color = color;
     this.mass = 1;
   }
-  display(){
+  display() {
     this.ctx.beginPath();
-    this.ctx.arc(this.positionCurrent.x, this.positionCurrent.y, this.radius, 0, 2 * Math.PI);
+    this.ctx.arc(
+      this.positionCurrent.x,
+      this.positionCurrent.y,
+      this.radius,
+      0,
+      2 * Math.PI
+    );
     this.ctx.fillStyle = this.color;
     this.ctx.fill();
+  }
+  update(dt: number) {
+    const velocity: vector = subVec(
+      this.positionCurrent,
+      this.positionPrevious
+    );
+    // save current position
+    this.positionPrevious = this.positionCurrent;
+    // perform verlet integration
+    this.positionCurrent = multVec(
+      addVec(this.positionCurrent, addVec(velocity, this.acceleration)),
+      dt * dt
+    );
+    // reset acceleration
+    this.acceleration = ZERO;
+  }
+  // apply force to the cell
+  applyForce(force: vector) {
+    this.acceleration = addVec(
+      this.acceleration,
+      multVec(force, 1 / this.mass)
+    );
   }
 }
 

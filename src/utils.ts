@@ -1,3 +1,8 @@
+import { vector } from "./types";
+export enum ZERO {
+    x = 0,
+    y = 0,
+}
 export function clearCanvas(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -15,4 +20,16 @@ export function resizeCanvas(canvas: HTMLCanvasElement) : HTMLCanvasElement {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
     return canvas;
+}
+
+export function addVec(a: vector, b: vector) {
+  return { x: a.x + b.x, y: a.y + b.y };
+}
+
+export function subVec(a: vector, b: vector) {
+  return { x: a.x - b.x, y: a.y - b.y };
+}
+
+export function multVec(a: vector, b: number) {
+  return { x: a.x * b, y: a.y * b };
 }
