@@ -33,7 +33,7 @@ class Cell {
     this.ctx.fillStyle = this.color;
     this.ctx.fill();
   }
-  update(dt: number) {
+  updatePosition(dt: number) {
     const velocity: vector = subVec(
       this.positionCurrent,
       this.positionPrevious
