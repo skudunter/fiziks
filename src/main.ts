@@ -15,13 +15,13 @@ const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
 // Setup main parts
-let cells: Cell[] = [];
-for (let i = 0; i < NUMCELLS; i++) {
-  cells.push(
-    new Cell(random(0, WIDTH), random(0, HEIGHT), random(5, 20), "white", 1, ctx!)
-  );
-}
-let solver = new Solver(cells);
+let cells: Cell[] = [new Cell(WIDTH / 2, HEIGHT / 2, 20, "white", 1, ctx!)];
+// for (let i = 0; i < NUMCELLS; i++) {
+//   cells.push(
+//     new Cell(random(0, WIDTH), random(0, HEIGHT), random(5, 20), "white", 1, ctx!)
+//   );
+// }
+let solver = new Solver(cells, canvas);
 let lastTime = 0;
 let dt = 0;
 

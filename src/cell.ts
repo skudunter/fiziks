@@ -33,10 +33,7 @@ class Cell {
     this.ctx.fill();
   }
   updatePosition(dt: number) {
-    let velocity: vector = subVec(
-      this.positionCurrent,
-      this.positionPrevious
-    );
+    let velocity: vector = subVec(this.positionCurrent, this.positionPrevious);
     // save current position
     this.positionPrevious = this.positionCurrent;
     // perform verlet integration
