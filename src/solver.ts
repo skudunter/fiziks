@@ -2,10 +2,9 @@ import Cell from "./cell";
 import { vector } from "./types";
 
 class Solver {
-  gravity: vector = { x: 0, y: 1000 };
-  constructor(public cells: Cell[], public ctx: CanvasRenderingContext2D) {
+  gravity: vector = { x: 0, y: 1 };
+  constructor(public cells: Cell[]) {
     this.cells = cells;
-    this.ctx = ctx;
   }
   public update(dt: number) {
     this.applyGravity();

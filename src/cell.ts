@@ -33,19 +33,21 @@ class Cell {
     this.ctx.fill();
   }
   updatePosition(dt: number) {
-    const velocity: vector = subVec(
+    let velocity: vector = subVec(
       this.positionCurrent,
       this.positionPrevious
     );
     // save current position
     this.positionPrevious = this.positionCurrent;
     // perform verlet integration
+    console.log(dt);
+    
     this.positionCurrent = multVec(
       addVec(this.positionCurrent, addVec(velocity, this.acceleration)),
-      dt * dt
+      1
     );
     // reset acceleration
-    this.acceleration = { x: 0, y: 0 };
+    this.acceleration = ZERO;
   }
   // apply force to the cell
   applyForce(force: vector) {

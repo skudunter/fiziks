@@ -1,4 +1,5 @@
 import { vector } from "./types";
+
 export enum ZERO {
     x = 0,
     y = 0,

@@ -1,7 +1,7 @@
 import "./style.css";
 import Cell from "./cell";
 import Solver from "./solver";
-import { resizeCanvas, background, clearCanvas } from "./utils";
+import { resizeCanvas, background, clearCanvas, random } from "./utils";
 
 // Get the canvas element and its context
 let canvas = resizeCanvas(
@@ -9,9 +9,19 @@ let canvas = resizeCanvas(
 );
 let ctx = canvas.getContext("2d");
 
+// Constants
+const NUMCELLS = 100;
+const WIDTH = canvas.width;
+const HEIGHT = canvas.height;
+
 // Setup main parts
-let cell = new Cell(500, 500, 20, "white", 1, ctx!);
-let solver = new Solver([cell], ctx!);
+let cells: Cell[] = [];
+for (let i = 0; i < NUMCELLS; i++) {
+  cells.push(
+    new Cell(random(0, WIDTH), random(0, HEIGHT), random(5, 20), "white", 1, ctx!)
+  );
+}
+let solver = new Solver(cells);
 let lastTime = 0;
 let dt = 0;
 
@@ -23,7 +33,6 @@ function loop(timestamp: number) {
   clearCanvas(ctx!, canvas);
 
   solver.update(dt);
-  
 
   requestAnimationFrame(loop);
 }
