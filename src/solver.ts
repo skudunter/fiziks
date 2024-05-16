@@ -10,7 +10,7 @@ class CircularSolver {
   // Parameters
   gravity: vector = { x: 0, y: 1 };
   constraintMiddlePoint: vector = { x: 0, y: 0 };
-  constraintRadius: number = 300;
+  constraintRadius: number = 400;
 
   constructor(
     public cells: Cell[],
@@ -26,7 +26,6 @@ class CircularSolver {
   public update(dt: number) {
     this.applyGravity();
     this.updatePositions(dt);
-    // this.applyFriction();
     this.applyCollision();
     this.applyConstraints();
     this.visualizeConstraints();
@@ -42,25 +41,16 @@ class CircularSolver {
       cell.applyForce(this.gravity);
     });
   }
-  private applyFriction() {
-    this.cells.forEach((cell) => {
-      const friction = multVec(cell.acceleration, 0.9);
-      cell.applyForce(friction);
-    });
-  }
   private applyConstraints() {
     this.cells.forEach((cell) => {
-      const toObject = subVec(cell.positionCurrent, this.constraintMiddlePoint);
+      const toObject = subVec(this.constraintMiddlePoint, cell.positionCurrent);
       const distanceToConstraint = dist(
         cell.positionCurrent,
         this.constraintMiddlePoint
       );
-      if (distanceToConstraint > this.constraintRadius - cell.radius) {
+      if (distanceToConstraint > (this.constraintRadius- cell.radius)) {
         const n = multVec(toObject, 1 / distanceToConstraint);
-        cell.positionCurrent = addVec(
-          this.constraintMiddlePoint,
-          multVec(n, distanceToConstraint - cell.radius)
-        );
+        cell.positionCurrent = subVec(this.constraintMiddlePoint, multVec(n, this.constraintRadius - cell.radius));
       }
     });
   }
