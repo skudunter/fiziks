@@ -20,7 +20,7 @@ class Cell {
     this.radius = radius;
     this.color = color;
     this.mass = 1;
-    this.friction = 0.95;
+    this.friction = 0.9;
   }
   display() {
     this.ctx.beginPath();

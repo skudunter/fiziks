@@ -11,7 +11,7 @@ class CircularSolver {
   gravity: vector = { x: 0, y: 10 };
   constraintMiddlePoint: vector = { x: 0, y: 0 };
   constraintRadius: number = 400;
-  subSteps = 5;
+  subSteps = 2;
 
   constructor(
     public cells: Cell[],
