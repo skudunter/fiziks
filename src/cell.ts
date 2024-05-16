@@ -40,8 +40,6 @@ class Cell {
     // save current position
     this.positionPrevious = this.positionCurrent;
     // perform verlet integration
-    console.log(dt);
-    
     this.positionCurrent = multVec(
       addVec(this.positionCurrent, addVec(velocity, this.acceleration)),
       1

@@ -2,7 +2,7 @@ import Cell from "./cell";
 import { vector } from "./types";
 
 class Solver {
-  gravity: vector = { x: 0, y: 1 };
+  gravity: vector = { x: 0, y: 1};
   constructor(public cells: Cell[]) {
     this.cells = cells;
   }
