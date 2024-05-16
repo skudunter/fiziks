@@ -5,6 +5,7 @@ import { addVec, subVec, multVec, ZERO } from "./utils";
 class Cell {
   positionCurrent: vector;
   positionPrevious: vector;
+  friction: number;
   acceleration: vector = { x: 0, y: 0 };
   constructor(
     public startX: number,
@@ -19,6 +20,7 @@ class Cell {
     this.radius = radius;
     this.color = color;
     this.mass = 1;
+    this.friction = 0.9;
   }
   display() {
     this.ctx.beginPath();
@@ -34,6 +36,7 @@ class Cell {
   }
   updatePosition(dt: number) {
     let velocity: vector = subVec(this.positionCurrent, this.positionPrevious);
+    velocity = multVec(velocity, this.friction);
     // save current position
     this.positionPrevious = this.positionCurrent;
     // perform verlet integration

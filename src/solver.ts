@@ -1,6 +1,6 @@
 import Cell from "./cell";
 import { vector } from "./types";
-import { addVec, dist, multVec, subVec } from "./utils";
+import { ZERO, addVec, dist, multVec, subVec } from "./utils";
 
 class CircularSolver {
   public width: number;
@@ -26,6 +26,8 @@ class CircularSolver {
   public update(dt: number) {
     this.applyGravity();
     this.updatePositions(dt);
+    // this.applyFriction();
+    this.applyCollision();
     this.applyConstraints();
     this.visualizeConstraints();
   }
@@ -38,6 +40,12 @@ class CircularSolver {
   private applyGravity() {
     this.cells.forEach((cell) => {
       cell.applyForce(this.gravity);
+    });
+  }
+  private applyFriction() {
+    this.cells.forEach((cell) => {
+      const friction = multVec(cell.acceleration, 0.9);
+      cell.applyForce(friction);
     });
   }
   private applyConstraints() {
@@ -66,6 +74,22 @@ class CircularSolver {
       2 * Math.PI
     );
     this.ctx.stroke();
+  }
+  private applyCollision() {
+    for (let i = 0; i < this.cells.length; i++) {
+      let cell = this.cells[i];
+      for (let j = i + 1; j < this.cells.length; j++) {
+        let other = this.cells[j];
+        let collisonAxis = subVec(cell.positionCurrent, other.positionCurrent);
+        const distance = dist(collisonAxis, ZERO);
+        if (distance < cell.radius + other.radius) {
+          const n: vector = multVec(collisonAxis, 1 / distance);
+          let delta = cell.radius + other.radius - distance;
+          cell.positionCurrent = addVec(cell.positionCurrent, multVec(n, delta / 2));
+          other.positionCurrent = subVec(other.positionCurrent, multVec(n, delta / 2));
+        }
+      }
+    }
   }
 }
 
