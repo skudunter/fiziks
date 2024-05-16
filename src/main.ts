@@ -21,7 +21,7 @@ let cells: Cell[] = [new Cell(WIDTH / 2, HEIGHT / 2, 20, "white", 1, ctx!)];
 //     new Cell(random(0, WIDTH), random(0, HEIGHT), random(5, 20), "white", 1, ctx!)
 //   );
 // }
-let solver = new Solver(cells, canvas);
+let solver = new Solver(cells, canvas, ctx!);
 let lastTime = 0;
 let dt = 0;
 

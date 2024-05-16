@@ -2,19 +2,32 @@ import Cell from "./cell";
 import { vector } from "./types";
 import { addVec, dist, multVec, subVec } from "./utils";
 
-class Solver {
+class CircularSolver {
   public width: number;
   public height: number;
+  public ctx: CanvasRenderingContext2D;
+
+  // Parameters
   gravity: vector = { x: 0, y: 1 };
-  constructor(public cells: Cell[], canvas: HTMLCanvasElement) {
+  constraintMiddlePoint: vector = { x: 0, y: 0 };
+  constraintRadius: number = 300;
+
+  constructor(
+    public cells: Cell[],
+    canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D
+  ) {
     this.cells = cells;
     this.width = canvas.width;
     this.height = canvas.height;
+    this.ctx = ctx;
+    this.constraintMiddlePoint = { x: this.width / 2, y: this.height / 2 };
   }
   public update(dt: number) {
     this.applyGravity();
     this.updatePositions(dt);
     this.applyConstraints();
+    this.visualizeConstraints();
   }
   private updatePositions(dt: number) {
     this.cells.forEach((cell) => {
@@ -28,23 +41,32 @@ class Solver {
     });
   }
   private applyConstraints() {
-    const constraintMiddlePoint = { x: this.width / 2, y: this.height / 2 };
-    const constraintRadius = 400;
     this.cells.forEach((cell) => {
-      const toObject = subVec(cell.positionCurrent, constraintMiddlePoint);
+      const toObject = subVec(cell.positionCurrent, this.constraintMiddlePoint);
       const distanceToConstraint = dist(
         cell.positionCurrent,
-        constraintMiddlePoint
+        this.constraintMiddlePoint
       );
-      if (distanceToConstraint > constraintRadius - cell.radius) {
+      if (distanceToConstraint > this.constraintRadius - cell.radius) {
         const n = multVec(toObject, 1 / distanceToConstraint);
         cell.positionCurrent = addVec(
-          constraintMiddlePoint,
+          this.constraintMiddlePoint,
           multVec(n, distanceToConstraint - cell.radius)
         );
       }
     });
   }
+  private visualizeConstraints() {
+    this.ctx.beginPath();
+    this.ctx.arc(
+      this.constraintMiddlePoint.x,
+      this.constraintMiddlePoint.y,
+      this.constraintRadius,
+      0,
+      2 * Math.PI
+    );
+    this.ctx.stroke();
+  }
 }
 
-export default Solver;
+export default CircularSolver;
