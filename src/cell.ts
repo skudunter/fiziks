@@ -20,7 +20,7 @@ class Cell {
     this.radius = radius;
     this.color = color;
     this.mass = 1;
-    this.friction = 0.9;
+    this.friction = 0.95;
   }
   display() {
     this.ctx.beginPath();
@@ -40,10 +40,9 @@ class Cell {
     // save current position
     this.positionPrevious = this.positionCurrent;
     // perform verlet integration
-    this.positionCurrent = multVec(
-      addVec(this.positionCurrent, addVec(velocity, this.acceleration)),
-      1
-    );
+    this.positionCurrent = 
+      addVec(this.positionCurrent, addVec(velocity, multVec(this.acceleration,dt*dt*1000)))
+   
     // reset acceleration
     this.acceleration = ZERO;
   }

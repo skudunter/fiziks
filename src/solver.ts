@@ -8,9 +8,10 @@ class CircularSolver {
   public ctx: CanvasRenderingContext2D;
 
   // Parameters
-  gravity: vector = { x: 0, y: 1 };
+  gravity: vector = { x: 0, y: 10 };
   constraintMiddlePoint: vector = { x: 0, y: 0 };
   constraintRadius: number = 400;
+  subSteps = 5;
 
   constructor(
     public cells: Cell[],
@@ -24,11 +25,14 @@ class CircularSolver {
     this.constraintMiddlePoint = { x: this.width / 2, y: this.height / 2 };
   }
   public update(dt: number) {
-    this.applyGravity();
-    this.updatePositions(dt);
-    this.applyCollision();
-    this.applyConstraints();
-    this.visualizeConstraints();
+    const subDt = dt / this.subSteps;
+    for (let i = this.subSteps; i > 0; i--) {
+      this.applyGravity();
+      this.updatePositions(subDt);
+      this.applyCollision();
+      this.applyConstraints();
+      this.visualizeConstraints();
+    }
   }
   private updatePositions(dt: number) {
     this.cells.forEach((cell) => {
@@ -48,9 +52,12 @@ class CircularSolver {
         cell.positionCurrent,
         this.constraintMiddlePoint
       );
-      if (distanceToConstraint > (this.constraintRadius- cell.radius)) {
+      if (distanceToConstraint > this.constraintRadius - cell.radius) {
         const n = multVec(toObject, 1 / distanceToConstraint);
-        cell.positionCurrent = subVec(this.constraintMiddlePoint, multVec(n, this.constraintRadius - cell.radius));
+        cell.positionCurrent = subVec(
+          this.constraintMiddlePoint,
+          multVec(n, this.constraintRadius - cell.radius)
+        );
       }
     });
   }
@@ -75,8 +82,14 @@ class CircularSolver {
         if (distance < cell.radius + other.radius) {
           const n: vector = multVec(collisonAxis, 1 / distance);
           let delta = cell.radius + other.radius - distance;
-          cell.positionCurrent = addVec(cell.positionCurrent, multVec(n, delta / 2));
-          other.positionCurrent = subVec(other.positionCurrent, multVec(n, delta / 2));
+          cell.positionCurrent = addVec(
+            cell.positionCurrent,
+            multVec(n, delta / 2)
+          );
+          other.positionCurrent = subVec(
+            other.positionCurrent,
+            multVec(n, delta / 2)
+          );
         }
       }
     }

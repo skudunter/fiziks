@@ -40,3 +40,6 @@ export function multVec(a: vector, b: number): vector {
 export function dist(a: vector, b: vector): number {
   return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 }
+export function getRandomColor(): string {
+  return `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})`;
+}
