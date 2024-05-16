@@ -23,6 +23,7 @@ function loop(timestamp: number) {
   clearCanvas(ctx!, canvas);
 
   solver.update(dt);
+  
 
   requestAnimationFrame(loop);
 }

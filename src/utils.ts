@@ -22,14 +22,14 @@ export function resizeCanvas(canvas: HTMLCanvasElement) : HTMLCanvasElement {
     return canvas;
 }
 
-export function addVec(a: vector, b: vector) {
+export function addVec(a: vector, b: vector):vector {
   return { x: a.x + b.x, y: a.y + b.y };
 }
 
-export function subVec(a: vector, b: vector) {
+export function subVec(a: vector, b: vector):vector {
   return { x: a.x - b.x, y: a.y - b.y };
 }
 
-export function multVec(a: vector, b: number) {
+export function multVec(a: vector, b: number):vector {
   return { x: a.x * b, y: a.y * b };
 }

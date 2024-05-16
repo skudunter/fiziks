@@ -2,7 +2,6 @@ import { vector } from "./types";
 import { addVec, subVec, multVec, ZERO } from "./utils";
 
 // Cell class implemetning all the physics logic
-
 class Cell {
   positionCurrent: vector;
   positionPrevious: vector;
@@ -46,7 +45,7 @@ class Cell {
       dt * dt
     );
     // reset acceleration
-    this.acceleration = ZERO;
+    this.acceleration = { x: 0, y: 0 };
   }
   // apply force to the cell
   applyForce(force: vector) {
