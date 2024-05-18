@@ -14,12 +14,13 @@ class Solver {
 
   public constructor(
     cells: Cell[],
-    canvas: HTMLCanvasElement,
+    width: number,
+    height: number,
     ctx: CanvasRenderingContext2D
   ) {
     this.cells = cells;
-    this.width = canvas.width;
-    this.height = canvas.height;
+    this.width = width;
+    this.height = height;
     this.ctx = ctx;
 
     // Variables
@@ -77,6 +78,7 @@ class Solver {
       0,
       2 * Math.PI
     );
+    this.ctx.strokeStyle = "white";
     this.ctx.stroke();
   }
   private applyCollision() {
