@@ -10,6 +10,7 @@ import {
   getRandomColor,
 } from "./utils";
 import Link from "./link";
+import { CircularEngine } from "./engine";
 
 // Get the canvas element and its context
 let canvas = resizeCanvas(
@@ -25,6 +26,7 @@ const HEIGHT = canvas.height;
 let solver = new Solver(WIDTH, HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
+let rect = solver.addRectangle(WIDTH/2, 300, 100, 100, getRandomColor());
 let cells = [
   new Cell(WIDTH / 2, 100, 20, getRandomColor(), 1,1, ctx!, true),
   new Cell(WIDTH / 2 + 30, 200, 20, getRandomColor(), 1, 1, ctx!),
@@ -33,7 +35,6 @@ let cells = [
   new Cell(WIDTH / 2 + 40, 200, 20, getRandomColor(), 1, 1, ctx!),
   new Cell(WIDTH / 2 + 60, 200, 20, getRandomColor(), 1, 1, ctx!),
 ];
-let rect = solver.addRectangle(WIDTH/2, 300, 100, 100, getRandomColor());
 let links = [
   new Link(cells[0], cells[1], 100, ctx!),
   new Link(cells[1], cells[2], 100, ctx!),
@@ -42,6 +43,7 @@ let links = [
   new Link(cells[4], cells[5], 100, ctx!),
   new Link(cells[5], rect.getCells[0], 100, ctx!),
 ];
+let engine = new CircularEngine(0.1, 0, cells[0], 100);
 links.forEach((link) => solver.addLink(link));
 cells.forEach((cell) => solver.addCell(cell));
 
