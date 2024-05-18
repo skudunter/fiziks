@@ -15,6 +15,7 @@ class Solver {
   private friction: number;
   private displayWireFrame: boolean;
   private rigidBodies: RigidBody[];
+  private hiddenPointColor: string;
 
   public constructor(
     width: number,
@@ -29,7 +30,8 @@ class Solver {
     this.ctx = ctx;
 
     // Variables
-    this.gravity = { x: 0, y: 1 };
+    this.gravity = { x: 0, y: 0.5 };
+    this.hiddenPointColor = "#000000";
     this.subSteps = 2;
     this.friction = 0.99;
     this.displayWireFrame = false;
@@ -55,10 +57,10 @@ class Solver {
     color: string
   ): RigidBody {
     let cells = [
-      new Cell(x, y, 0.1, color, 1, this.friction, this.ctx),
-      new Cell(x + size, y, 0.1, color, 1, this.friction, this.ctx),
-      new Cell(x + size, y + size, 0.1, color, 1, this.friction, this.ctx),
-      new Cell(x, y + size, 0.1, color, 1, this.friction, this.ctx),
+      new Cell(x, y, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
+      new Cell(x + size, y, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
+      new Cell(x + size, y + size, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
+      new Cell(x, y + size, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
     ];
     this.addLink(
       new Link(
@@ -83,10 +85,10 @@ class Solver {
     color: string
   ): RigidBody {
     let cells = [
-      new Cell(x, y, 1, color, 1, this.friction, this.ctx),
-      new Cell(x + width, y, 1, color, 1, this.friction, this.ctx),
-      new Cell(x + width, y + height, 1, color, 1, this.friction, this.ctx),
-      new Cell(x, y + height, 1, color, 1, this.friction, this.ctx),
+      new Cell(x, y, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
+      new Cell(x + width, y, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
+      new Cell(x + width, y + height, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
+      new Cell(x, y + height, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
     ];
     this.addLink(
       new Link(
@@ -118,8 +120,8 @@ class Solver {
       this.updatePositions(subDt);
       this.applyCollision();
       this.applyConstraints();
-      this.applyLinks();
       this.displayRigidBodies();
+      this.applyLinks();
     }
   }
   private updatePositions(dt: number) {

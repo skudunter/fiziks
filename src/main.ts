@@ -1,8 +1,6 @@
 import "./style.css";
-import Cell from "./cell";
 import Solver from "./solver";
-import Link from "./link";
-import { resizeCanvas, clearCanvas, random, getRandomColor, subVec,multVec,normalise } from "./utils";
+import { resizeCanvas, clearCanvas, subVec,multVec,normalise } from "./utils";
 
 // Get the canvas element and its context
 let canvas = resizeCanvas(
@@ -11,8 +9,6 @@ let canvas = resizeCanvas(
 let ctx = canvas.getContext("2d");
 
 // Constants
-const NUMCELLS = 100;
-const CELLSPAWNSPEED = 1000;
 const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
