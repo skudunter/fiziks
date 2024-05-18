@@ -47,6 +47,19 @@ class RigidBody {
       cell.applyForce(force);
     }
   }
+  public addTorque(torque: number) {
+    const center = this.getCenter;
+    for (let cell of this.cells) {
+      const force = {
+        x: center.x - cell.getPositionCurrent.x,
+        y: center.y - cell.getPositionCurrent.y,
+      };
+      cell.applyForce({
+        x: force.y * torque,
+        y: -force.x * torque,
+      });
+    }
+  }
   get getCenter() {
     let x = 0;
     let y = 0;
