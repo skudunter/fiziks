@@ -15,7 +15,7 @@ const CELLSPAWNSPEED =1000;
 const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
-// Setup main parts
+// Setup main components
 let cells: Cell[] = [];
 setInterval(() => {
   cells.push(new Cell(WIDTH / 2+10, HEIGHT / 2-320 , random(10,20),getRandomColor(),1,0.99, ctx!));
@@ -27,9 +27,7 @@ let dt = 0;
 
 // Main loop
 function loop(timestamp: number) {
-  // Calculate dt
-  dt = (timestamp - lastTime) / 1000; // Convert to seconds
-  console.log(dt*dt);
+  dt = (timestamp - lastTime) / 1000;
   
   lastTime = timestamp;
   clearCanvas(ctx!, canvas);
@@ -39,4 +37,4 @@ function loop(timestamp: number) {
   requestAnimationFrame(loop);
 }
 
-loop(0); // Start the loop
+loop(0); 
