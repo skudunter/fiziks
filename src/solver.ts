@@ -30,8 +30,9 @@ class Solver {
     this.subSteps = 2;
     this.friction = 0.99;
   }
-  public addCell(cell: Cell) {
+  public addCell(cell: Cell): Cell {
     this.cells.push(cell);
+    return cell;
   }
   public addLink(link: Link) {
     this.links.push(link);
@@ -64,8 +65,10 @@ class Solver {
     );
     return this.addRigidbody(cells);
   }
-  public addCircle(x: number, y: number, radius: number, color: string) {
-    this.addCell(new Cell(x, y, radius, color, 1, this.friction, this.ctx));
+  public addCircle(x: number, y: number, radius: number, color: string): Cell {
+    return this.addCell(
+      new Cell(x, y, radius, color, 1, this.friction, this.ctx)
+    );
   }
   public addRectangle(
     x: number,

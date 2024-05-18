@@ -21,8 +21,8 @@ let solver = new Solver(WIDTH, HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
 let square = solver.addSquare(100, 100, 100, "red");
-solver.addCircle(300, 300, 50, "blue");
-solver.addRectangle(400, 400, 100, 50, "green");
+let circle = solver.addCircle(300, 300, 50, "blue");
+let rect = solver.addRectangle(400, 400, 100, 50, "green");
 
 // Main loop
 function loop(timestamp: number) {
@@ -34,5 +34,10 @@ function loop(timestamp: number) {
   solver.update(dt);
   requestAnimationFrame(loop);
 }
+
+// on mouse click, spawn a cell
+canvas.addEventListener("click", (e) => {
+  rect.applyForce({ x: 100, y: 100 });
+});
 
 loop(0);
