@@ -30,7 +30,7 @@ class Solver {
     this.ctx = ctx;
 
     // Variables
-    this.gravity = { x: 0, y: 0.2 };
+    this.gravity = { x: 0, y: 0.7 };
     this.hiddenPointColor = "#000000";
     this.subSteps = 2;
     this.friction = 0.999;

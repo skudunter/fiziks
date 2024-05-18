@@ -27,12 +27,12 @@ let lastTime = 0;
 let dt = 0;
 let cells = [
   new Cell(WIDTH / 2, 100, 20, getRandomColor(), 1, 0.99, ctx!, true),
-  new Cell(WIDTH / 2 + 30, 200, 20, getRandomColor(), 1, 0.99, ctx!),
-  new Cell(WIDTH / 2 + 50, 200, 20, getRandomColor(), 1, 0.99, ctx!),
-  new Cell(WIDTH / 2 + 10, 200, 20, getRandomColor(), 1, 0.99, ctx!),
-  new Cell(WIDTH / 2 + 40, 200, 20, getRandomColor(), 1, 0.99, ctx!),
-  new Cell(WIDTH / 2 + 60, 200, 20, getRandomColor(), 1, 0.99, ctx!),
-  new Cell(WIDTH / 2 + 90, 200, 20, getRandomColor(), 1, 0.99, ctx!),
+  new Cell(WIDTH / 2 + 30, 200, 20, getRandomColor(), 1, 1, ctx!),
+  new Cell(WIDTH / 2 + 50, 200, 20, getRandomColor(), 1, 1, ctx!),
+  new Cell(WIDTH / 2 + 10, 200, 20, getRandomColor(), 1, 1, ctx!),
+  new Cell(WIDTH / 2 + 40, 200, 20, getRandomColor(), 1, 1, ctx!),
+  new Cell(WIDTH / 2 + 60, 200, 20, getRandomColor(), 1, 1, ctx!),
+  new Cell(WIDTH / 2 + 90, 200, 20, getRandomColor(), 1, 1, ctx!),
 ];
 let links = [
   new Link(cells[0], cells[1], 100, ctx!),
@@ -56,11 +56,11 @@ function loop(timestamp: number) {
   requestAnimationFrame(loop);
 }
 // on mouse click, do shit
-// canvas.addEventListener("click", (e) => {
-//   let mousePos = {x:e.x,y:e.y};
-//   let delta = subVec(mousePos,rect.getCenter);
-//   let force = multVec(normalise(delta),100)
-//   rect.applyForce(force);
-// });
+canvas.addEventListener("click", (e) => {
+  let mousePos = {x:e.x,y:e.y};
+  let delta = subVec(mousePos,cells[6].getPositionCurrent);
+  let force = multVec(normalise(delta),100);
+  cells[6].applyForce(force);
+});
 
 loop(0);
