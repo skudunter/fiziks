@@ -35,6 +35,11 @@ class RigidBody {
       );
     }
   }
+  public applyForce(force: { x: number; y: number }) {
+    for (let cell of this.cells) {
+      cell.applyForce(force);
+    }
+  }
 }
 
 export default RigidBody;

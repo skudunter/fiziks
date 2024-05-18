@@ -12,6 +12,7 @@ class Solver {
   private subSteps: number;
   private cells: Cell[];
   private links: Link[];
+  private friction: number;
 
   public constructor(
     width: number,
@@ -27,6 +28,7 @@ class Solver {
     // Variables
     this.gravity = { x: 0, y: 1 };
     this.subSteps = 2;
+    this.friction = 0.99;
   }
   public addCell(cell: Cell) {
     this.cells.push(cell);
@@ -34,17 +36,23 @@ class Solver {
   public addLink(link: Link) {
     this.links.push(link);
   }
-  public addRigidbody(cells: Cell[]) {
+  public addRigidbody(cells: Cell[]): RigidBody {
     let rigidBody = new RigidBody(cells, this.ctx);
     this.cells = this.cells.concat(rigidBody.getCells);
     this.links = this.links.concat(rigidBody.getLinks);
+    return rigidBody;
   }
-  public addSquare(x: number, y: number, size: number, color: string) {
+  public addSquare(
+    x: number,
+    y: number,
+    size: number,
+    color: string
+  ): RigidBody {
     let cells = [
-      new Cell(x, y, 1, color, 1, 0.99, this.ctx),
-      new Cell(x + size, y, 1, color, 1, 0.99, this.ctx),
-      new Cell(x + size, y + size, 1, color, 1, 0.99, this.ctx),
-      new Cell(x, y + size, 1, color, 1, 0.99, this.ctx),
+      new Cell(x, y, 1, color, 1, this.friction, this.ctx),
+      new Cell(x + size, y, 1, color, 1, this.friction, this.ctx),
+      new Cell(x + size, y + size, 1, color, 1, this.friction, this.ctx),
+      new Cell(x, y + size, 1, color, 1, this.friction, this.ctx),
     ];
     this.addLink(
       new Link(
@@ -54,17 +62,23 @@ class Solver {
         this.ctx
       )
     );
-    this.addRigidbody(cells);
+    return this.addRigidbody(cells);
   }
   public addCircle(x: number, y: number, radius: number, color: string) {
-    this.addCell(new Cell(x, y, radius, color, 1, 0.99, this.ctx));
+    this.addCell(new Cell(x, y, radius, color, 1, this.friction, this.ctx));
   }
-  public addRectangle(x: number, y: number, width: number, height: number, color: string) {
+  public addRectangle(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    color: string
+  ) {
     let cells = [
-      new Cell(x, y, 1, color, 1, 0.99, this.ctx),
-      new Cell(x + width, y, 1, color, 1, 0.99, this.ctx),
-      new Cell(x + width, y + height, 1, color, 1, 0.99, this.ctx),
-      new Cell(x, y + height, 1, color, 1, 0.99, this.ctx),
+      new Cell(x, y, 1, color, 1, this.friction, this.ctx),
+      new Cell(x + width, y, 1, color, 1, this.friction, this.ctx),
+      new Cell(x + width, y + height, 1, color, 1, this.friction, this.ctx),
+      new Cell(x, y + height, 1, color, 1, this.friction, this.ctx),
     ];
     this.addLink(
       new Link(

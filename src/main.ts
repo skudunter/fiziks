@@ -20,7 +20,7 @@ const HEIGHT = canvas.height;
 let solver = new Solver(WIDTH, HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
-solver.addSquare(100, 100, 100, "red");
+let square = solver.addSquare(100, 100, 100, "red");
 solver.addCircle(300, 300, 50, "blue");
 solver.addRectangle(400, 400, 100, 50, "green");
 
@@ -32,7 +32,6 @@ function loop(timestamp: number) {
   clearCanvas(ctx!, canvas);
 
   solver.update(dt);
-
   requestAnimationFrame(loop);
 }
 
