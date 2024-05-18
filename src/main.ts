@@ -1,6 +1,7 @@
 import "./style.css";
 import Cell from "./cell";
 import Solver from "./solver";
+import Link from "./link";
 import { resizeCanvas, clearCanvas, random, getRandomColor} from "./utils";
 
 // Get the canvas element and its context
@@ -16,12 +17,13 @@ const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
 // Setup main components
-let cells: Cell[] = [];
-setInterval(() => {
-  cells.push(new Cell(WIDTH / 2+10, HEIGHT / 2-320 , random(10,20),getRandomColor(),1,0.99, ctx!));
-  cells[cells.length-1].applyForce({x:random(-200,200),y:random(-200,100)});
-},CELLSPAWNSPEED);
-let solver = new Solver(cells,WIDTH,HEIGHT, ctx!);
+let cells: Cell[] = [new Cell(WIDTH / 2, HEIGHT / 2, 20, "red", 1, 0.99, ctx!),new Cell(WIDTH / 2+50, HEIGHT / 2, 20, "red", 1, 0.99, ctx!)];
+let links: Link[] = [new Link(cells[0], cells[1], 50)];
+// setInterval(() => {
+//   cells.push(new Cell(WIDTH / 2+10, HEIGHT / 2-320 , random(10,20),getRandomColor(),1,0.99, ctx!));
+//   cells[cells.length-1].applyForce({x:random(-200,200),y:random(-200,100)});
+// },CELLSPAWNSPEED);
+let solver = new Solver(cells,links,WIDTH,HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
 

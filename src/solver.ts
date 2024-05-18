@@ -1,33 +1,32 @@
 import Cell from "./cell";
 import { vector } from "./types";
 import { ZERO, addVec, dist, multVec, subVec } from "./utils";
-
+import Link from "./link";
 class Solver {
   private width: number;
   private height: number;
   private ctx: CanvasRenderingContext2D;
   private gravity: vector;
-  private constraintMiddlePoint: vector;
-  private constraintRadius: number;
   private subSteps: number;
   private cells: Cell[];
+  private links: Link[];
 
   public constructor(
     cells: Cell[],
+    links: Link[],
     width: number,
     height: number,
     ctx: CanvasRenderingContext2D
   ) {
     this.cells = cells;
+    this.links = links;
     this.width = width;
     this.height = height;
     this.ctx = ctx;
 
     // Variables
     this.gravity = { x: 0, y: 0.9 };
-    this.constraintRadius = 450;
     this.subSteps = 2;
-    this.constraintMiddlePoint = { x: this.width / 2, y: this.height / 2 };
   }
   public update(dt: number) {
     const subDt = dt / this.subSteps;
@@ -36,7 +35,7 @@ class Solver {
       this.updatePositions(subDt);
       this.applyCollision();
       this.applyConstraints();
-      this.visualizeConstraints();
+      this.applyLinks();
     }
   }
   private updatePositions(dt: number) {
@@ -50,36 +49,38 @@ class Solver {
       cell.applyForce(this.gravity);
     });
   }
-  private applyConstraints() {
-    this.cells.forEach((cell) => {
-      const toObject = subVec(
-        this.constraintMiddlePoint,
-        cell.getPositionCurrent
-      );
-      const distanceToConstraint = dist(
-        cell.getPositionCurrent,
-        this.constraintMiddlePoint
-      );
-      if (distanceToConstraint > this.constraintRadius - cell.getRadius) {
-        const n = multVec(toObject, 1 / distanceToConstraint);
-        cell.setPositionCurrent = subVec(
-          this.constraintMiddlePoint,
-          multVec(n, this.constraintRadius - cell.getRadius)
-        );
-      }
+  private applyLinks(){
+    this.links.forEach((link)=>{
+      link.apply();
     });
   }
-  private visualizeConstraints() {
-    this.ctx.beginPath();
-    this.ctx.arc(
-      this.constraintMiddlePoint.x,
-      this.constraintMiddlePoint.y,
-      this.constraintRadius,
-      0,
-      2 * Math.PI
-    );
-    this.ctx.strokeStyle = "white";
-    this.ctx.stroke();
+  private applyConstraints() {
+    this.cells.forEach((cell) => {
+      if (cell.getPositionCurrent.x > this.width - cell.getRadius) {
+        cell.setPositionCurrent = {
+          x: this.width - cell.getRadius,
+          y: cell.getPositionCurrent.y,
+        };
+      }
+      if (cell.getPositionCurrent.x < cell.getRadius) {
+        cell.setPositionCurrent = {
+          x: cell.getRadius,
+          y: cell.getPositionCurrent.y,
+        };
+      }
+      if (cell.getPositionCurrent.y > this.height - cell.getRadius) {
+        cell.setPositionCurrent = {
+          x: cell.getPositionCurrent.x,
+          y: this.height - cell.getRadius,
+        };
+      }
+      if (cell.getPositionCurrent.y < cell.getRadius) {
+        cell.setPositionCurrent = {
+          x: cell.getPositionCurrent.x,
+          y: cell.getRadius,
+        };
+      }
+    });
   }
   private applyCollision() {
     for (let i = 0; i < this.cells.length; i++) {

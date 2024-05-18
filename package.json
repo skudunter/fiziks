@@ -1,7 +1,12 @@
 {
-  "name": "my-vite-project",
-  "private": true,
+  "name": "kak-fiziks",
+  "private": false,
   "version": "0.0.0",
+  "description": "A simple physics engine using Verlet integration writen by me from scratch",
+  "main": "index.ts",
+  "module": "index.ts",
+  "license": "MIT",
+  "author": "skudunter",
   "type": "module",
   "scripts": {
     "dev": "vite",
