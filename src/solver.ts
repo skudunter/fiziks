@@ -2,19 +2,18 @@ import Cell from "./cell";
 import { vector } from "./types";
 import { ZERO, addVec, dist, multVec, subVec } from "./utils";
 
-class CircularSolver {
-  public width: number;
-  public height: number;
-  public ctx: CanvasRenderingContext2D;
+class Solver {
+  private width: number;
+  private height: number;
+  private ctx: CanvasRenderingContext2D;
+  private gravity: vector;
+  private constraintMiddlePoint: vector;
+  private constraintRadius: number;
+  private subSteps: number;
+  private cells: Cell[];
 
-  // Parameters
-  gravity: vector = { x: 0, y: 10 };
-  constraintMiddlePoint: vector = { x: 0, y: 0 };
-  constraintRadius: number = 400;
-  subSteps = 2;
-
-  constructor(
-    public cells: Cell[],
+  public constructor(
+    cells: Cell[],
     canvas: HTMLCanvasElement,
     ctx: CanvasRenderingContext2D
   ) {
@@ -22,6 +21,11 @@ class CircularSolver {
     this.width = canvas.width;
     this.height = canvas.height;
     this.ctx = ctx;
+
+    // Variables
+    this.gravity = { x: 0, y: 0.1 };
+    this.constraintRadius = 450;
+    this.subSteps = 1;
     this.constraintMiddlePoint = { x: this.width / 2, y: this.height / 2 };
   }
   public update(dt: number) {
@@ -47,16 +51,19 @@ class CircularSolver {
   }
   private applyConstraints() {
     this.cells.forEach((cell) => {
-      const toObject = subVec(this.constraintMiddlePoint, cell.positionCurrent);
+      const toObject = subVec(
+        this.constraintMiddlePoint,
+        cell.getPositionCurrent
+      );
       const distanceToConstraint = dist(
-        cell.positionCurrent,
+        cell.getPositionCurrent,
         this.constraintMiddlePoint
       );
-      if (distanceToConstraint > this.constraintRadius - cell.radius) {
+      if (distanceToConstraint > this.constraintRadius - cell.getRadius) {
         const n = multVec(toObject, 1 / distanceToConstraint);
-        cell.positionCurrent = subVec(
+        cell.setPositionCurrent = subVec(
           this.constraintMiddlePoint,
-          multVec(n, this.constraintRadius - cell.radius)
+          multVec(n, this.constraintRadius - cell.getRadius)
         );
       }
     });
@@ -77,17 +84,20 @@ class CircularSolver {
       let cell = this.cells[i];
       for (let j = i + 1; j < this.cells.length; j++) {
         let other = this.cells[j];
-        let collisonAxis = subVec(cell.positionCurrent, other.positionCurrent);
+        let collisonAxis = subVec(
+          cell.getPositionCurrent,
+          other.getPositionCurrent
+        );
         const distance = dist(collisonAxis, ZERO);
-        if (distance < cell.radius + other.radius) {
+        if (distance < cell.getRadius + other.getRadius) {
           const n: vector = multVec(collisonAxis, 1 / distance);
-          let delta = cell.radius + other.radius - distance;
-          cell.positionCurrent = addVec(
-            cell.positionCurrent,
+          let delta = cell.getRadius + other.getRadius - distance;
+          cell.setPositionCurrent = addVec(
+            cell.getPositionCurrent,
             multVec(n, delta / 2)
           );
-          other.positionCurrent = subVec(
-            other.positionCurrent,
+          other.setPositionCurrent = subVec(
+            other.getPositionCurrent,
             multVec(n, delta / 2)
           );
         }
@@ -96,4 +106,4 @@ class CircularSolver {
   }
 }
 
-export default CircularSolver;
+export default Solver;

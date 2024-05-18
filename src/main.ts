@@ -11,14 +11,15 @@ let ctx = canvas.getContext("2d");
 
 // Constants
 const NUMCELLS = 100;
-const CELLSPAWNSPEED =100;
+const CELLSPAWNSPEED =1000;
 const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
 // Setup main parts
 let cells: Cell[] = [];
 setInterval(() => {
-  cells.push(new Cell(WIDTH / 2+320, HEIGHT / 2-100 , random(10,20),getRandomColor(), 1, ctx!));
+  cells.push(new Cell(WIDTH / 2+10, HEIGHT / 2-320 , random(10,20),getRandomColor(),1,0.99, ctx!));
+  cells[cells.length-1].applyForce({x:random(-200,200),y:random(-200,100)});
 },CELLSPAWNSPEED);
 let solver = new Solver(cells, canvas, ctx!);
 let lastTime = 0;
