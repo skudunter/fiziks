@@ -40,6 +40,15 @@ class RigidBody {
       cell.applyForce(force);
     }
   }
+  get getCenter() {
+    let x = 0;
+    let y = 0;
+    for (let cell of this.cells) {
+      x += cell.getPositionCurrent.x;
+      y += cell.getPositionCurrent.y;
+    }
+    return { x: x / this.cells.length, y: y / this.cells.length };
+  }
 }
 
 export default RigidBody;

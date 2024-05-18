@@ -2,7 +2,7 @@ import "./style.css";
 import Cell from "./cell";
 import Solver from "./solver";
 import Link from "./link";
-import { resizeCanvas, clearCanvas, random, getRandomColor } from "./utils";
+import { resizeCanvas, clearCanvas, random, getRandomColor, subVec,multVec,normalise } from "./utils";
 
 // Get the canvas element and its context
 let canvas = resizeCanvas(
@@ -34,10 +34,12 @@ function loop(timestamp: number) {
   solver.update(dt);
   requestAnimationFrame(loop);
 }
-
-// on mouse click, spawn a cell
+// on mouse click, do shit
 canvas.addEventListener("click", (e) => {
-  rect.applyForce({ x: 100, y: 100 });
+  let mousePos = {x:e.x,y:e.y};
+  let delta = subVec(mousePos,rect.getCenter);
+  let force = multVec(normalise(delta),100)
+  rect.applyForce(force);
 });
 
 loop(0);

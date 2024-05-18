@@ -44,3 +44,7 @@ export function getRandomColor(): string {
   const greenValue = random(50,255);
   return `rgb(0, ${greenValue}, 0)`;
 }
+export function normalise(a:vector):vector{
+  let mag = Math.sqrt(a.x**2 + a.y**2);
+  return {x:a.x/mag,y:a.y/mag};
+}
