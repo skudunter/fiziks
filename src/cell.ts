@@ -81,6 +81,9 @@ class Cell {
     if (this.unMoveable) return;
     this.positionCurrent = position;
   }
+  public set setPositionCurrentRegardLessOfFixed(position: vector) {
+    this.positionCurrent = position;
+  }
 }
 
 export default Cell;

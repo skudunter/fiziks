@@ -3,6 +3,7 @@ import { vector } from "./types";
 import { ZERO, addVec, dist, multVec, subVec } from "./utils";
 import Link from "./link";
 import RigidBody from "./rigidBody";
+import { Engine } from "./engine";
 
 class Solver {
   private width: number;
@@ -16,6 +17,7 @@ class Solver {
   private displayWireFrame: boolean;
   private rigidBodies: RigidBody[];
   private hiddenPointColor: string;
+  private engines: Engine[];
 
   public constructor(
     width: number,
@@ -25,6 +27,7 @@ class Solver {
     this.cells = [];
     this.links = [];
     this.rigidBodies = [];
+    this.engines = [];
     this.width = width;
     this.height = height;
     this.ctx = ctx;
@@ -43,6 +46,9 @@ class Solver {
   public addLink(link: Link) {
     this.links.push(link);
   }
+  public addEngine(engine: Engine) {
+    this.engines.push(engine);
+  }
   public addRigidbody(cells: Cell[], color: string): RigidBody {
     let rigidBody = new RigidBody(cells, this.ctx, color);
     this.rigidBodies.push(rigidBody);
@@ -58,9 +64,33 @@ class Solver {
   ): RigidBody {
     let cells = [
       new Cell(x, y, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
-      new Cell(x + size, y, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
-      new Cell(x + size, y + size, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
-      new Cell(x, y + size, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
+      new Cell(
+        x + size,
+        y,
+        0.1,
+        this.hiddenPointColor,
+        1,
+        this.friction,
+        this.ctx
+      ),
+      new Cell(
+        x + size,
+        y + size,
+        0.1,
+        this.hiddenPointColor,
+        1,
+        this.friction,
+        this.ctx
+      ),
+      new Cell(
+        x,
+        y + size,
+        0.1,
+        this.hiddenPointColor,
+        1,
+        this.friction,
+        this.ctx
+      ),
     ];
     this.addLink(
       new Link(
@@ -86,9 +116,33 @@ class Solver {
   ): RigidBody {
     let cells = [
       new Cell(x, y, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
-      new Cell(x + width, y, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
-      new Cell(x + width, y + height, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
-      new Cell(x, y + height, 0.1, this.hiddenPointColor, 1, this.friction, this.ctx),
+      new Cell(
+        x + width,
+        y,
+        0.1,
+        this.hiddenPointColor,
+        1,
+        this.friction,
+        this.ctx
+      ),
+      new Cell(
+        x + width,
+        y + height,
+        0.1,
+        this.hiddenPointColor,
+        1,
+        this.friction,
+        this.ctx
+      ),
+      new Cell(
+        x,
+        y + height,
+        0.1,
+        this.hiddenPointColor,
+        1,
+        this.friction,
+        this.ctx
+      ),
     ];
     this.addLink(
       new Link(
@@ -113,15 +167,21 @@ class Solver {
       rigidBody.display();
     });
   }
+  private updateEngines(dt: number) {
+    this.engines.forEach((engine) => {
+      engine.update(dt);
+    });
+  }
   public update(dt: number) {
     const subDt = dt / this.subSteps;
     for (let i = this.subSteps; i > 0; i--) {
       this.applyGravity();
       this.updatePositions(subDt);
       this.applyCollision();
-      this.applyConstraints();
+      this.updateEngines(subDt);
       this.displayRigidBodies();
       this.applyLinks();
+      this.applyConstraints();
     }
   }
   private updatePositions(dt: number) {
