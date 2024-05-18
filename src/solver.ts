@@ -3,7 +3,12 @@ import { vector } from "./types";
 import { ZERO, addVec, dist, multVec, subVec } from "./utils";
 import Link from "./link";
 import RigidBody from "./rigidBody";
-import { Engine } from "./engine";
+import {
+  Engine,
+  CircularEngine,
+  HorizontalEngine,
+  VerticalEngine,
+} from "./engine";
 
 class Solver {
   private width: number;
@@ -46,8 +51,35 @@ class Solver {
   public addLink(link: Link) {
     this.links.push(link);
   }
-  public addEngine(engine: Engine) {
+  public addCircularEngine(
+    speed: number,
+    angle: number,
+    radius: number,
+    cell: Cell
+  ): Engine {
+    let engine = new CircularEngine(speed, angle, radius, cell);
     this.engines.push(engine);
+    return engine;
+  }
+  public addHorizontalEngine(
+    speed: number,
+    angle: number,
+    radius: number,
+    cell: Cell
+  ): Engine {
+    let engine = new HorizontalEngine(speed, angle, radius, cell);
+    this.engines.push(engine);
+    return engine;
+  }
+  public addVerticalEngine(
+    speed: number,
+    angle: number,
+    radius: number,
+    cell: Cell
+  ): Engine {
+    let engine = new VerticalEngine(speed, angle, radius, cell);
+    this.engines.push(engine);
+    return engine;
   }
   public addRigidbody(cells: Cell[], color: string): RigidBody {
     let rigidBody = new RigidBody(cells, this.ctx, color);

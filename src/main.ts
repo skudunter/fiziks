@@ -43,8 +43,7 @@ let links = [
   new Link(cells[4], cells[5], 100, ctx!),
   new Link(cells[5], rect.getCells[0], 100, ctx!),
 ];
-let engine = new VerticalEngine(4, 0, 50,cells[0]);
-solver.addEngine(engine);
+solver.addCircularEngine(4, 0, 50,cells[0]);
 links.forEach((link) => solver.addLink(link));
 cells.forEach((cell) => solver.addCell(cell));
 
