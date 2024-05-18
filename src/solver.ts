@@ -30,11 +30,11 @@ class Solver {
     this.ctx = ctx;
 
     // Variables
-    this.gravity = { x: 0, y: 0.5 };
+    this.gravity = { x: 0, y: 0.2 };
     this.hiddenPointColor = "#000000";
     this.subSteps = 2;
-    this.friction = 0.99;
-    this.displayWireFrame = false;
+    this.friction = 0.999;
+    this.displayWireFrame = true;
   }
   public addCell(cell: Cell): Cell {
     this.cells.push(cell);

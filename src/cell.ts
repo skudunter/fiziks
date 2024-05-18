@@ -11,6 +11,7 @@ class Cell {
   private color: string;
   private mass: number;
   private ctx: CanvasRenderingContext2D;
+  private unMoveable: boolean;
   public constructor(
     startX: number,
     startY: number,
@@ -18,7 +19,8 @@ class Cell {
     color: string,
     mass: number,
     friction: number,
-    ctx: CanvasRenderingContext2D
+    ctx: CanvasRenderingContext2D,
+    unMoveable: boolean = false
   ) {
     this.positionCurrent = { x: startX, y: startY };
     this.positionPrevious = { x: startX, y: startY };
@@ -27,6 +29,7 @@ class Cell {
     this.mass = mass;
     this.friction = friction;
     this.ctx = ctx;
+    this.unMoveable = unMoveable;
   }
   public display() {
     this.ctx.beginPath();
@@ -48,10 +51,12 @@ class Cell {
     // save current position
     this.positionPrevious = this.positionCurrent;
     // perform verlet integration
-    this.positionCurrent = addVec(
-      this.positionCurrent,
-      addVec(velocity, multVec(this.acceleration, dt * dt * 1000))
-    );
+    if (!this.unMoveable) {
+      this.positionCurrent = addVec(
+        this.positionCurrent,
+        addVec(velocity, multVec(this.acceleration, dt * dt * 1000))
+      );
+    }
     // reset acceleration
     this.acceleration = ZERO;
   }
@@ -69,7 +74,11 @@ class Cell {
   public get getRadius() {
     return this.radius;
   }
+  public get static() {
+    return this.unMoveable;
+  }
   public set setPositionCurrent(position: vector) {
+    if (this.unMoveable) return;
     this.positionCurrent = position;
   }
 }

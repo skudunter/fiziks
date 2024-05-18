@@ -70,6 +70,9 @@ class RigidBody {
     this.ctx.fill();
     this.ctx.stroke(); 
   }
+  get cellsList(){
+    return this.cells;
+  }
 }
 
 export default RigidBody;

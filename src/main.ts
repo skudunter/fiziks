@@ -1,6 +1,15 @@
 import "./style.css";
 import Solver from "./solver";
-import { resizeCanvas, clearCanvas, subVec,multVec,normalise } from "./utils";
+import Cell from "./cell";
+import {
+  resizeCanvas,
+  clearCanvas,
+  subVec,
+  multVec,
+  normalise,
+  getRandomColor,
+} from "./utils";
+import Link from "./link";
 
 // Get the canvas element and its context
 let canvas = resizeCanvas(
@@ -16,9 +25,25 @@ const HEIGHT = canvas.height;
 let solver = new Solver(WIDTH, HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
-let square = solver.addSquare(100, 100, 100, "red");
-let circle = solver.addCircle(300, 300, 50, "blue");
-let rect = solver.addRectangle(400, 400, 100, 50, "green");
+let cells = [
+  new Cell(WIDTH / 2, 100, 20, getRandomColor(), 1, 0.99, ctx!, true),
+  new Cell(WIDTH / 2 + 30, 200, 20, getRandomColor(), 1, 0.99, ctx!),
+  new Cell(WIDTH / 2 + 50, 200, 20, getRandomColor(), 1, 0.99, ctx!),
+  new Cell(WIDTH / 2 + 10, 200, 20, getRandomColor(), 1, 0.99, ctx!),
+  new Cell(WIDTH / 2 + 40, 200, 20, getRandomColor(), 1, 0.99, ctx!),
+  new Cell(WIDTH / 2 + 60, 200, 20, getRandomColor(), 1, 0.99, ctx!),
+  new Cell(WIDTH / 2 + 90, 200, 20, getRandomColor(), 1, 0.99, ctx!),
+];
+let links = [
+  new Link(cells[0], cells[1], 100, ctx!),
+  new Link(cells[1], cells[2], 100, ctx!),
+  new Link(cells[2], cells[3], 100, ctx!),
+  new Link(cells[3], cells[4], 100, ctx!),
+  new Link(cells[4], cells[5], 100, ctx!),
+  new Link(cells[5], cells[6], 100, ctx!),
+];
+links.forEach((link) => solver.addLink(link));
+cells.forEach((cell) => solver.addCell(cell));
 
 // Main loop
 function loop(timestamp: number) {
@@ -31,11 +56,11 @@ function loop(timestamp: number) {
   requestAnimationFrame(loop);
 }
 // on mouse click, do shit
-canvas.addEventListener("click", (e) => {
-  let mousePos = {x:e.x,y:e.y};
-  let delta = subVec(mousePos,rect.getCenter);
-  let force = multVec(normalise(delta),100)
-  rect.applyForce(force);
-});
+// canvas.addEventListener("click", (e) => {
+//   let mousePos = {x:e.x,y:e.y};
+//   let delta = subVec(mousePos,rect.getCenter);
+//   let force = multVec(normalise(delta),100)
+//   rect.applyForce(force);
+// });
 
 loop(0);
