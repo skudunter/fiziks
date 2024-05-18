@@ -26,7 +26,7 @@ class Solver {
     // Variables
     this.gravity = { x: 0, y: 0.9 };
     this.constraintRadius = 450;
-    this.subSteps = 1;
+    this.subSteps = 2;
     this.constraintMiddlePoint = { x: this.width / 2, y: this.height / 2 };
   }
   public update(dt: number) {
