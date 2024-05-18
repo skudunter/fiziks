@@ -26,7 +26,7 @@ let solver = new Solver(WIDTH, HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
 let cells = [
-  new Cell(WIDTH / 2, 100, 20, getRandomColor(), 1, 0.99, ctx!, true),
+  new Cell(WIDTH / 2, 100, 20, getRandomColor(), 1,1, ctx!, true),
   new Cell(WIDTH / 2 + 30, 200, 20, getRandomColor(), 1, 1, ctx!),
   new Cell(WIDTH / 2 + 50, 200, 20, getRandomColor(), 1, 1, ctx!),
   new Cell(WIDTH / 2 + 10, 200, 20, getRandomColor(), 1, 1, ctx!),
