@@ -10,7 +10,7 @@ import {
   getRandomColor,
 } from "./utils";
 import Link from "./link";
-import { CircularEngine } from "./engine";
+import { CircularEngine, HorizontalEngine, VerticalEngine } from "./engine";
 
 // Get the canvas element and its context
 let canvas = resizeCanvas(
@@ -26,9 +26,9 @@ const HEIGHT = canvas.height;
 let solver = new Solver(WIDTH, HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
-let rect = solver.addRectangle(WIDTH/2, 300, 100, 100, getRandomColor());
+let rect = solver.addRectangle(WIDTH / 2, 300, 100, 100, getRandomColor());
 let cells = [
-  new Cell(WIDTH / 2, 100, 20, getRandomColor(), 1,1, ctx!, true),
+  new Cell(WIDTH / 2, 100, 20, getRandomColor(), 1, 1, ctx!, true),
   new Cell(WIDTH / 2 + 30, 200, 20, getRandomColor(), 1, 1, ctx!),
   new Cell(WIDTH / 2 + 50, 200, 20, getRandomColor(), 1, 1, ctx!),
   new Cell(WIDTH / 2 + 10, 200, 20, getRandomColor(), 1, 1, ctx!),
@@ -43,7 +43,8 @@ let links = [
   new Link(cells[4], cells[5], 100, ctx!),
   new Link(cells[5], rect.getCells[0], 100, ctx!),
 ];
-let engine = new CircularEngine(0.1, 0, cells[0], 100);
+let engine = new VerticalEngine(4, 0, 50,cells[0]);
+solver.addEngine(engine);
 links.forEach((link) => solver.addLink(link));
 cells.forEach((cell) => solver.addCell(cell));
 
@@ -59,9 +60,9 @@ function loop(timestamp: number) {
 }
 // on mouse click, do shit
 canvas.addEventListener("click", (e) => {
-  let mousePos = {x:e.x,y:e.y};
-  let delta = subVec(mousePos,rect.getCenter);
-  let force = multVec(normalise(delta),100);
+  let mousePos = { x: e.x, y: e.y };
+  let delta = subVec(mousePos, rect.getCenter);
+  let force = multVec(normalise(delta), 100);
   rect.applyForce(force);
 });
 
