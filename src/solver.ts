@@ -25,7 +25,7 @@ class Solver {
     this.ctx = ctx;
 
     // Variables
-    this.gravity = { x: 0, y: 0.9 };
+    this.gravity = { x: 0, y: 1 };
     this.subSteps = 2;
   }
   public update(dt: number) {
