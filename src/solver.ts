@@ -13,6 +13,8 @@ class Solver {
   private cells: Cell[];
   private links: Link[];
   private friction: number;
+  private displayWireFrame: boolean;
+  private rigidBodies: RigidBody[];
 
   public constructor(
     width: number,
@@ -21,6 +23,7 @@ class Solver {
   ) {
     this.cells = [];
     this.links = [];
+    this.rigidBodies = [];
     this.width = width;
     this.height = height;
     this.ctx = ctx;
@@ -29,6 +32,7 @@ class Solver {
     this.gravity = { x: 0, y: 1 };
     this.subSteps = 2;
     this.friction = 0.99;
+    this.displayWireFrame = false;
   }
   public addCell(cell: Cell): Cell {
     this.cells.push(cell);
@@ -37,8 +41,9 @@ class Solver {
   public addLink(link: Link) {
     this.links.push(link);
   }
-  public addRigidbody(cells: Cell[]): RigidBody {
-    let rigidBody = new RigidBody(cells, this.ctx);
+  public addRigidbody(cells: Cell[], color: string): RigidBody {
+    let rigidBody = new RigidBody(cells, this.ctx, color);
+    this.rigidBodies.push(rigidBody);
     this.cells = this.cells.concat(rigidBody.getCells);
     this.links = this.links.concat(rigidBody.getLinks);
     return rigidBody;
@@ -50,10 +55,10 @@ class Solver {
     color: string
   ): RigidBody {
     let cells = [
-      new Cell(x, y, 1, color, 1, this.friction, this.ctx),
-      new Cell(x + size, y, 1, color, 1, this.friction, this.ctx),
-      new Cell(x + size, y + size, 1, color, 1, this.friction, this.ctx),
-      new Cell(x, y + size, 1, color, 1, this.friction, this.ctx),
+      new Cell(x, y, 0.1, color, 1, this.friction, this.ctx),
+      new Cell(x + size, y, 0.1, color, 1, this.friction, this.ctx),
+      new Cell(x + size, y + size, 0.1, color, 1, this.friction, this.ctx),
+      new Cell(x, y + size, 0.1, color, 1, this.friction, this.ctx),
     ];
     this.addLink(
       new Link(
@@ -63,7 +68,7 @@ class Solver {
         this.ctx
       )
     );
-    return this.addRigidbody(cells);
+    return this.addRigidbody(cells, color);
   }
   public addCircle(x: number, y: number, radius: number, color: string): Cell {
     return this.addCell(
@@ -91,7 +96,20 @@ class Solver {
         this.ctx
       )
     );
-    return this.addRigidbody(cells);
+    this.addLink(
+      new Link(
+        cells[1],
+        cells[3],
+        dist(cells[1].getPositionCurrent, cells[3].getPositionCurrent),
+        this.ctx
+      )
+    );
+    return this.addRigidbody(cells, color);
+  }
+  private displayRigidBodies() {
+    this.rigidBodies.forEach((rigidBody) => {
+      rigidBody.display();
+    });
   }
   public update(dt: number) {
     const subDt = dt / this.subSteps;
@@ -101,6 +119,7 @@ class Solver {
       this.applyCollision();
       this.applyConstraints();
       this.applyLinks();
+      this.displayRigidBodies();
     }
   }
   private updatePositions(dt: number) {
@@ -117,7 +136,9 @@ class Solver {
   private applyLinks() {
     this.links.forEach((link) => {
       link.apply();
-      link.display();
+      if (this.displayWireFrame) {
+        link.display();
+      }
     });
   }
   private applyConstraints() {

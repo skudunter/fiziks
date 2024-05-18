@@ -6,10 +6,16 @@ class RigidBody {
   private cells: Cell[];
   private links: Link[];
   private ctx: CanvasRenderingContext2D;
+  private color: string;
 
-  public constructor(cells: Cell[], ctx: CanvasRenderingContext2D) {
+  public constructor(
+    cells: Cell[],
+    ctx: CanvasRenderingContext2D,
+    color: string
+  ) {
     this.cells = cells;
     this.links = [];
+    this.color = color;
     this.ctx = ctx;
     this.linkCells();
   }
@@ -48,6 +54,21 @@ class RigidBody {
       y += cell.getPositionCurrent.y;
     }
     return { x: x / this.cells.length, y: y / this.cells.length };
+  }
+  public display() {
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = this.color; 
+    this.ctx.fillStyle = this.color; 
+    this.ctx.moveTo(
+      this.cells[0].getPositionCurrent.x,
+      this.cells[0].getPositionCurrent.y
+    );
+    for (let cell of this.cells) {
+      this.ctx.lineTo(cell.getPositionCurrent.x, cell.getPositionCurrent.y);
+    }
+    this.ctx.closePath();
+    this.ctx.fill();
+    this.ctx.stroke(); 
   }
 }
 
