@@ -26,6 +26,7 @@ class RigidBody {
     return this.links;
   }
   private linkCells() {
+    if (this.cells.length < 2) return;
     for (let i = 0; i < this.cells.length; i++) {
       let j = (i + 1) % this.cells.length;
       this.links.push(
@@ -57,8 +58,8 @@ class RigidBody {
   }
   public display() {
     this.ctx.beginPath();
-    this.ctx.strokeStyle = this.color; 
-    this.ctx.fillStyle = this.color; 
+    this.ctx.strokeStyle = this.color;
+    this.ctx.fillStyle = this.color;
     this.ctx.moveTo(
       this.cells[0].getPositionCurrent.x,
       this.cells[0].getPositionCurrent.y
@@ -68,9 +69,9 @@ class RigidBody {
     }
     this.ctx.closePath();
     this.ctx.fill();
-    this.ctx.stroke(); 
+    this.ctx.stroke();
   }
-  get cellsList(){
+  get cellsList() {
     return this.cells;
   }
 }

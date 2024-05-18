@@ -32,15 +32,15 @@ let cells = [
   new Cell(WIDTH / 2 + 10, 200, 20, getRandomColor(), 1, 1, ctx!),
   new Cell(WIDTH / 2 + 40, 200, 20, getRandomColor(), 1, 1, ctx!),
   new Cell(WIDTH / 2 + 60, 200, 20, getRandomColor(), 1, 1, ctx!),
-  new Cell(WIDTH / 2 + 90, 200, 20, getRandomColor(), 1, 1, ctx!),
 ];
+let rect = solver.addRectangle(WIDTH/2, 300, 100, 100, getRandomColor());
 let links = [
   new Link(cells[0], cells[1], 100, ctx!),
   new Link(cells[1], cells[2], 100, ctx!),
   new Link(cells[2], cells[3], 100, ctx!),
   new Link(cells[3], cells[4], 100, ctx!),
   new Link(cells[4], cells[5], 100, ctx!),
-  new Link(cells[5], cells[6], 100, ctx!),
+  new Link(cells[5], rect.getCells[0], 100, ctx!),
 ];
 links.forEach((link) => solver.addLink(link));
 cells.forEach((cell) => solver.addCell(cell));
@@ -58,9 +58,9 @@ function loop(timestamp: number) {
 // on mouse click, do shit
 canvas.addEventListener("click", (e) => {
   let mousePos = {x:e.x,y:e.y};
-  let delta = subVec(mousePos,cells[6].getPositionCurrent);
+  let delta = subVec(mousePos,rect.getCenter);
   let force = multVec(normalise(delta),100);
-  cells[6].applyForce(force);
+  rect.applyForce(force);
 });
 
 loop(0);
