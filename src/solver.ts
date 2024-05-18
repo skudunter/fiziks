@@ -52,6 +52,7 @@ class Solver {
   private applyLinks(){
     this.links.forEach((link)=>{
       link.apply();
+      link.display();
     });
   }
   private applyConstraints() {

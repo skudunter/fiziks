@@ -17,8 +17,8 @@ const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
 // Setup main components
-let cells: Cell[] = [new Cell(WIDTH / 2, HEIGHT / 2, 20, "red", 1, 0.99, ctx!),new Cell(WIDTH / 2+50, HEIGHT / 2, 20, "red", 1, 0.99, ctx!)];
-let links: Link[] = [new Link(cells[0], cells[1], 50)];
+let cells: Cell[] = [new Cell(WIDTH / 2, HEIGHT / 2, 20, "green", 1, 0.99, ctx!),new Cell(WIDTH / 2+150, HEIGHT / 2, 20, "green", 1, 0.99, ctx!)];
+let links: Link[] = [new Link(cells[0], cells[1], 50,ctx!),];
 // setInterval(() => {
 //   cells.push(new Cell(WIDTH / 2+10, HEIGHT / 2-320 , random(10,20),getRandomColor(),1,0.99, ctx!));
 //   cells[cells.length-1].applyForce({x:random(-200,200),y:random(-200,100)});
