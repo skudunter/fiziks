@@ -2,6 +2,8 @@ import Cell from "./cell";
 import { vector } from "./types";
 import { ZERO, addVec, dist, multVec, subVec } from "./utils";
 import Link from "./link";
+import RigidBody from "./rigidBody";
+
 class Solver {
   private width: number;
   private height: number;
@@ -12,14 +14,12 @@ class Solver {
   private links: Link[];
 
   public constructor(
-    cells: Cell[],
-    links: Link[],
     width: number,
     height: number,
     ctx: CanvasRenderingContext2D
   ) {
-    this.cells = cells;
-    this.links = links;
+    this.cells = [];
+    this.links = [];
     this.width = width;
     this.height = height;
     this.ctx = ctx;
@@ -27,6 +27,54 @@ class Solver {
     // Variables
     this.gravity = { x: 0, y: 1 };
     this.subSteps = 2;
+  }
+  public addCell(cell: Cell) {
+    this.cells.push(cell);
+  }
+  public addLink(link: Link) {
+    this.links.push(link);
+  }
+  public addRigidbody(cells: Cell[]) {
+    let rigidBody = new RigidBody(cells, this.ctx);
+    this.cells = this.cells.concat(rigidBody.getCells);
+    this.links = this.links.concat(rigidBody.getLinks);
+  }
+  public addSquare(x: number, y: number, size: number, color: string) {
+    let cells = [
+      new Cell(x, y, 1, color, 1, 0.99, this.ctx),
+      new Cell(x + size, y, 1, color, 1, 0.99, this.ctx),
+      new Cell(x + size, y + size, 1, color, 1, 0.99, this.ctx),
+      new Cell(x, y + size, 1, color, 1, 0.99, this.ctx),
+    ];
+    this.addLink(
+      new Link(
+        cells[0],
+        cells[2],
+        dist(cells[0].getPositionCurrent, cells[2].getPositionCurrent),
+        this.ctx
+      )
+    );
+    this.addRigidbody(cells);
+  }
+  public addCircle(x: number, y: number, radius: number, color: string) {
+    this.addCell(new Cell(x, y, radius, color, 1, 0.99, this.ctx));
+  }
+  public addRectangle(x: number, y: number, width: number, height: number, color: string) {
+    let cells = [
+      new Cell(x, y, 1, color, 1, 0.99, this.ctx),
+      new Cell(x + width, y, 1, color, 1, 0.99, this.ctx),
+      new Cell(x + width, y + height, 1, color, 1, 0.99, this.ctx),
+      new Cell(x, y + height, 1, color, 1, 0.99, this.ctx),
+    ];
+    this.addLink(
+      new Link(
+        cells[0],
+        cells[2],
+        dist(cells[0].getPositionCurrent, cells[2].getPositionCurrent),
+        this.ctx
+      )
+    );
+    this.addRigidbody(cells);
   }
   public update(dt: number) {
     const subDt = dt / this.subSteps;
@@ -49,8 +97,8 @@ class Solver {
       cell.applyForce(this.gravity);
     });
   }
-  private applyLinks(){
-    this.links.forEach((link)=>{
+  private applyLinks() {
+    this.links.forEach((link) => {
       link.apply();
       link.display();
     });

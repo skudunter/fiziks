@@ -2,7 +2,7 @@ import Cell from "./cell";
 import Link from "./link";
 import { dist } from "./utils";
 
-class Rigidbody {
+class RigidBody {
   private cells: Cell[];
   private links: Link[];
   private ctx: CanvasRenderingContext2D;
@@ -13,7 +13,12 @@ class Rigidbody {
     this.ctx = ctx;
     this.linkCells();
   }
-
+  get getCells() {
+    return this.cells;
+  }
+  get getLinks() {
+    return this.links;
+  }
   private linkCells() {
     for (let i = 0; i < this.cells.length; i++) {
       let j = (i + 1) % this.cells.length;
@@ -32,4 +37,4 @@ class Rigidbody {
   }
 }
 
-export default Rigidbody;
+export default RigidBody;

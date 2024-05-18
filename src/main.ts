@@ -17,20 +17,17 @@ const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
 // Setup main components
-let cells: Cell[] = [
-  new Cell(WIDTH / 2, HEIGHT / 2, 7, "green", 1, 0.99, ctx!),
-  new Cell(WIDTH / 2 + 100, HEIGHT / 2, 7, "green", 1, 0.99, ctx!),
-  new Cell(WIDTH / 2 + 100, HEIGHT / 2 - 100, 7, "green", 1, 0.99, ctx!),
-  new Cell(WIDTH / 2, HEIGHT / 2 - 100, 7, "green", 1, 0.99, ctx!),
-];
-let links: Link[] = [new Link(cells[0], cells[1], 100, ctx!),new Link(cells[0], cells[3], 100, ctx!),new Link(cells[1], cells[2], 100, ctx!),new Link(cells[2], cells[3], 100, ctx!),new Link(cells[0], cells[2], 141.42, ctx!)];
-// setInterval(() => {
-//   cells.push(new Cell(WIDTH / 2+10, HEIGHT / 2-320 , random(10,20),getRandomColor(),1,0.99, ctx!));
-//   cells[cells.length-1].applyForce({x:random(-200,200),y:random(-200,100)});
-// },CELLSPAWNSPEED);
-let solver = new Solver(cells, links, WIDTH, HEIGHT, ctx!);
+let solver = new Solver(WIDTH, HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
+let cells = [
+  new Cell(100, 100, 10, "red", 1, 0.99, ctx!),
+  new Cell(200, 100, 10, "red", 1, 0.99, ctx!),
+  new Cell(100, 200, 10, "red", 1, 0.99, ctx!),
+];
+solver.addSquare(100, 100, 100, "red");
+solver.addCircle(300, 300, 50, "blue");
+solver.addRectangle(400, 400, 100, 50, "green");
 
 // Main loop
 function loop(timestamp: number) {
