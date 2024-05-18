@@ -20,11 +20,6 @@ const HEIGHT = canvas.height;
 let solver = new Solver(WIDTH, HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
-let cells = [
-  new Cell(100, 100, 10, "red", 1, 0.99, ctx!),
-  new Cell(200, 100, 10, "red", 1, 0.99, ctx!),
-  new Cell(100, 200, 10, "red", 1, 0.99, ctx!),
-];
 solver.addSquare(100, 100, 100, "red");
 solver.addCircle(300, 300, 50, "blue");
 solver.addRectangle(400, 400, 100, 50, "green");
