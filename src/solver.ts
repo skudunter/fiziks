@@ -73,7 +73,7 @@ class Solver {
     width: number,
     height: number,
     color: string
-  ) {
+  ): RigidBody {
     let cells = [
       new Cell(x, y, 1, color, 1, this.friction, this.ctx),
       new Cell(x + width, y, 1, color, 1, this.friction, this.ctx),
@@ -88,7 +88,7 @@ class Solver {
         this.ctx
       )
     );
-    this.addRigidbody(cells);
+    return this.addRigidbody(cells);
   }
   public update(dt: number) {
     const subDt = dt / this.subSteps;
