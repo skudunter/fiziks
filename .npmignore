@@ -1,0 +1,6 @@
+index.html
+.gitignore
+.npmignore
+tsconfig.json
+src/main.ts 
+src/styles.css

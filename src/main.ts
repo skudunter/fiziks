@@ -1,5 +1,4 @@
 import "./style.css";
-import Solver from "./solver";
 import Cell from "./cell";
 import {
   resizeCanvas,
@@ -10,7 +9,7 @@ import {
   getRandomColor,
 } from "./utils";
 import Link from "./link";
-import { CircularEngine, HorizontalEngine, VerticalEngine } from "./engine";
+import Fiziks from "./fiziks";
 
 // Get the canvas element and its context
 let canvas = resizeCanvas(
@@ -23,7 +22,7 @@ const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
 // Setup main components
-let solver = new Solver(WIDTH, HEIGHT, ctx!);
+let solver = new Fiziks(WIDTH, HEIGHT, ctx!);
 let lastTime = 0;
 let dt = 0;
 let rect = solver.addRectangle(WIDTH / 2, 300, 100, 100, getRandomColor());

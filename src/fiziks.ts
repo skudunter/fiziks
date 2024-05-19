@@ -10,7 +10,7 @@ import {
   VerticalEngine,
 } from "./engine";
 
-class Solver {
+class Fiziks {
   private width: number;
   private height: number;
   private ctx: CanvasRenderingContext2D;
@@ -290,4 +290,4 @@ class Solver {
   }
 }
 
-export default Solver;
+export default Fiziks;
