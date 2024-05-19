@@ -253,9 +253,9 @@ Creates a new instance of the `Link` class.
     - `ctx`: The 2D rendering context of the canvas.
 # Sources
 ---
-![](https://www.youtube.com/watch?v=lS_qeBy3aQI)
+![pezzas-work](https://www.youtube.com/watch?v=lS_qeBy3aQI)
 
-![](https://www.youtube.com/watch?v=3HjO_RGIjCU)
+![coding-math](https://www.youtube.com/watch?v=3HjO_RGIjCU)
 
 - [verlet-integration-article](https://betterprogramming.pub/making-a-verlet-physics-engine-in-javascript-1dff066d7bc5)
 
