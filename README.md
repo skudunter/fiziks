@@ -39,8 +39,8 @@ npm run dev
 
 # Sources
 ---
-![](https://www.youtube.com/watch?v=lS_qeBy3aQI)
+![youtube-video-pezzas-work](https://www.youtube.com/watch?v=lS_qeBy3aQI)
 
-![](https://www.youtube.com/watch?v=3HjO_RGIjCU)
+![youtube-video-coding-math](https://www.youtube.com/watch?v=3HjO_RGIjCU)
 
 - [verlet-integration-article](https://betterprogramming.pub/making-a-verlet-physics-engine-in-javascript-1dff066d7bc5)
