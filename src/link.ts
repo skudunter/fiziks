@@ -18,24 +18,25 @@ class Link {
     this.targetLength = targetLength;
   }
   public apply() {
-    const axis = subVec(
-      this.node1.getPositionCurrent,
-      this.node2.getPositionCurrent
-    );
-    const distance = dist(
-      this.node1.getPositionCurrent,
-      this.node2.getPositionCurrent
-    );
-    const n = multVec(axis, 1 / distance);
-    const delta = this.targetLength - distance;
-    this.node1.setPositionCurrent = addVec(
-      this.node1.getPositionCurrent,
-      multVec(n, delta / 2)
-    );
-    this.node2.setPositionCurrent = addVec(
-      this.node2.getPositionCurrent,
-      multVec(n, -delta / 2)
-    );
+const axis = subVec(
+  this.node1.getPositionCurrent,
+  this.node2.getPositionCurrent
+);
+const distance = dist(
+  this.node1.getPositionCurrent,
+  this.node2.getPositionCurrent
+);
+const n = multVec(axis, 1 / distance);
+const delta = this.targetLength - distance;
+const totalMass = this.node1.getMass + this.node2.getMass;
+this.node1.setPositionCurrent = addVec(
+  this.node1.getPositionCurrent,
+  multVec(n, delta * (this.node2.getMass / totalMass))
+);
+this.node2.setPositionCurrent = addVec(
+  this.node2.getPositionCurrent,
+  multVec(n, -delta * (this.node1.getMass / totalMass))
+);
   }
   public display() {
     this.ctx.beginPath();
