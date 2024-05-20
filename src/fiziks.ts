@@ -40,7 +40,7 @@ class Fiziks {
     // Variables
     this.gravity = { x: 0, y: 0.7 };
     this.hiddenPointColor = "#000000";
-    this.subSteps = 2;
+    this.subSteps = 4;
     this.friction = 0.999;
     this.displayWireFrame = true;
   }
