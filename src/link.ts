@@ -28,8 +28,14 @@ class Link {
     );
     const n = multVec(axis, 1 / distance);
     const delta = this.targetLength - distance;
-    this.node1.setPositionCurrent = addVec(this.node1.getPositionCurrent, multVec(n, delta / 2));
-    this.node2.setPositionCurrent = addVec(this.node2.getPositionCurrent, multVec(n, -delta / 2));
+    this.node1.setPositionCurrent = addVec(
+      this.node1.getPositionCurrent,
+      multVec(n, delta / 2)
+    );
+    this.node2.setPositionCurrent = addVec(
+      this.node2.getPositionCurrent,
+      multVec(n, -delta / 2)
+    );
   }
   public display() {
     this.ctx.beginPath();

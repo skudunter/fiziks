@@ -194,7 +194,30 @@ class Fiziks {
     );
     return this.addRigidbody(cells, color);
   }
-  private displayRigidBodies() {
+  public update(dt: number) {
+    const subDt = dt / this.subSteps;
+    for (let i = this.subSteps; i > 0; i--) {
+      for (let i = 0; i < this.cells.length; i++) {
+        const cell = this.cells[i];
+        cell.updatePosition(subDt);
+        cell.applyForce(this.gravity);
+        this.applyConstraints(cell);
+        this.applyCollision(cell, i);
+      }
+      this.updateEngines(subDt);
+      this.updateLinks();
+    }
+    this.display();
+  }
+  private display() {
+    this.cells.forEach((cell) => {
+      cell.display();
+    });
+    this.links.forEach((link) => {
+      if (this.displayWireFrame) {
+        link.display();
+      }
+    });
     this.rigidBodies.forEach((rigidBody) => {
       rigidBody.display();
     });
@@ -204,87 +227,56 @@ class Fiziks {
       engine.update(dt);
     });
   }
-  public update(dt: number) {
-    const subDt = dt / this.subSteps;
-    for (let i = this.subSteps; i > 0; i--) {
-      this.applyGravity();
-      this.updatePositions(subDt);
-      this.applyCollision();
-      this.updateEngines(subDt);
-      this.displayRigidBodies();
-      this.applyLinks();
-      this.applyConstraints();
-    }
-  }
-  private updatePositions(dt: number) {
-    this.cells.forEach((cell) => {
-      cell.updatePosition(dt);
-      cell.display();
-    });
-  }
-  private applyGravity() {
-    this.cells.forEach((cell) => {
-      cell.applyForce(this.gravity);
-    });
-  }
-  private applyLinks() {
+  private updateLinks() {
     this.links.forEach((link) => {
       link.apply();
-      if (this.displayWireFrame) {
-        link.display();
-      }
     });
   }
-  private applyConstraints() {
-    this.cells.forEach((cell) => {
-      if (cell.getPositionCurrent.x > this.width - cell.getRadius) {
-        cell.setPositionCurrent = {
-          x: this.width - cell.getRadius,
-          y: cell.getPositionCurrent.y,
-        };
-      }
-      if (cell.getPositionCurrent.x < cell.getRadius) {
-        cell.setPositionCurrent = {
-          x: cell.getRadius,
-          y: cell.getPositionCurrent.y,
-        };
-      }
-      if (cell.getPositionCurrent.y > this.height - cell.getRadius) {
-        cell.setPositionCurrent = {
-          x: cell.getPositionCurrent.x,
-          y: this.height - cell.getRadius,
-        };
-      }
-      if (cell.getPositionCurrent.y < cell.getRadius) {
-        cell.setPositionCurrent = {
-          x: cell.getPositionCurrent.x,
-          y: cell.getRadius,
-        };
-      }
-    });
+  private applyConstraints(cell: Cell) {
+    if (cell.getPositionCurrent.x > this.width - cell.getRadius) {
+      cell.setPositionCurrent = {
+        x: this.width - cell.getRadius,
+        y: cell.getPositionCurrent.y,
+      };
+    }
+    if (cell.getPositionCurrent.x < cell.getRadius) {
+      cell.setPositionCurrent = {
+        x: cell.getRadius,
+        y: cell.getPositionCurrent.y,
+      };
+    }
+    if (cell.getPositionCurrent.y > this.height - cell.getRadius) {
+      cell.setPositionCurrent = {
+        x: cell.getPositionCurrent.x,
+        y: this.height - cell.getRadius,
+      };
+    }
+    if (cell.getPositionCurrent.y < cell.getRadius) {
+      cell.setPositionCurrent = {
+        x: cell.getPositionCurrent.x,
+        y: cell.getRadius,
+      };
+    }
   }
-  private applyCollision() {
-    for (let i = 0; i < this.cells.length; i++) {
-      let cell = this.cells[i];
-      for (let j = i + 1; j < this.cells.length; j++) {
-        let other = this.cells[j];
-        let collisonAxis = subVec(
+  private applyCollision(cell: Cell, i: number) {
+    for (let j = i + 1; j < this.cells.length; j++) {
+      let other = this.cells[j];
+      let collisonAxis = subVec(
+        cell.getPositionCurrent,
+        other.getPositionCurrent
+      );
+      const distance = dist(collisonAxis, ZERO);
+      if (distance < cell.getRadius + other.getRadius) {
+        const n: vector = multVec(collisonAxis, 1 / distance);
+        let delta = cell.getRadius + other.getRadius - distance;
+        cell.setPositionCurrent = addVec(
           cell.getPositionCurrent,
-          other.getPositionCurrent
+          multVec(n, delta / 2)
         );
-        const distance = dist(collisonAxis, ZERO);
-        if (distance < cell.getRadius + other.getRadius) {
-          const n: vector = multVec(collisonAxis, 1 / distance);
-          let delta = cell.getRadius + other.getRadius - distance;
-          cell.setPositionCurrent = addVec(
-            cell.getPositionCurrent,
-            multVec(n, delta / 2)
-          );
-          other.setPositionCurrent = subVec(
-            other.getPositionCurrent,
-            multVec(n, delta / 2)
-          );
-        }
+        other.setPositionCurrent = subVec(
+          other.getPositionCurrent,
+          multVec(n, delta / 2)
+        );
       }
     }
   }
