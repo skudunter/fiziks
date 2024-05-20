@@ -199,7 +199,8 @@ class Fiziks {
     for (let i = this.subSteps; i > 0; i--) {
       for (let i = 0; i < this.cells.length; i++) {
         const cell = this.cells[i];
-        cell.applyForce(this.gravity);
+        const gravityForce = multVec(this.gravity, cell.getMass);
+        cell.applyForce(gravityForce);
         cell.updatePosition(subDt);
         this.applyCollision(cell, i);
         this.applyConstraints(cell);

@@ -84,6 +84,9 @@ class Cell {
   public set setPositionCurrentRegardLessOfFixed(position: vector) {
     this.positionCurrent = position;
   }
+  get getMass() {
+    return this.mass;
+  }
 }
 
 export default Cell;
