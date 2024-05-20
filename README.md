@@ -263,4 +263,3 @@ Creates a new instance of the `Link` class.
 # Bugs
 
 - Polygons only have collisions on their points
-- There is for loop redundancy in the solver class
