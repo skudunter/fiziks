@@ -262,23 +262,24 @@ class Fiziks {
   private applyCollision(cell: Cell, i: number) {
     for (let j = i + 1; j < this.cells.length; j++) {
       let other = this.cells[j];
-      let collisonAxis = subVec(
-        cell.getPositionCurrent,
-        other.getPositionCurrent
-      );
-      const distance = dist(collisonAxis, ZERO);
-      if (distance < cell.getRadius + other.getRadius) {
-        const n: vector = multVec(collisonAxis, 1 / distance);
-        let delta = cell.getRadius + other.getRadius - distance;
-        cell.setPositionCurrent = addVec(
-          cell.getPositionCurrent,
-          multVec(n, delta / 2)
-        );
-        other.setPositionCurrent = subVec(
-          other.getPositionCurrent,
-          multVec(n, delta / 2)
-        );
-      }
+let collisionAxis = subVec(
+  cell.getPositionCurrent,
+  other.getPositionCurrent
+);
+const distance = dist(collisionAxis, ZERO);
+if (distance < cell.getRadius + other.getRadius) {
+  const n: vector = multVec(collisionAxis, 1 / distance);
+  let delta = cell.getRadius + other.getRadius - distance;
+  const totalMass = cell.getMass + other.getMass;
+  cell.setPositionCurrent = addVec(
+    cell.getPositionCurrent,
+    multVec(n, delta * (other.getMass / totalMass))
+  );
+  other.setPositionCurrent = subVec(
+    other.getPositionCurrent,
+    multVec(n, delta * (cell.getMass / totalMass))
+  );
+}
     }
   }
 }

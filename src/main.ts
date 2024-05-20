@@ -32,7 +32,7 @@ let cells = [
   new Cell(WIDTH / 2 + 50, 200, 20, getRandomColor(), 1, 1, ctx!),
   new Cell(WIDTH / 2 + 10, 200, 20, getRandomColor(), 1, 1, ctx!),
   new Cell(WIDTH / 2 + 40, 200, 20, getRandomColor(), 1, 1, ctx!),
-  new Cell(WIDTH / 2 + 60, 200, 20, getRandomColor(), 1, 1, ctx!),
+  new Cell(WIDTH / 2 + 60, 200, 20, getRandomColor(), 10, 1, ctx!),
 ];
 let links = [
   new Link(cells[0], cells[1], 100, ctx!),
