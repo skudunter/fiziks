@@ -24,6 +24,7 @@ Feel free to open a pull request or raise an issue.
 - `fiziks.ts`- contains the main physics solver and top level API
 - `rigidBody.ts`- contains the class for connecting cells and links to form a rigidbody
 - `util.ts`- contains utility functions to make my life easier
+- `main.ts`- contains a demo setup for a simple pendulum
 # Usage
 ---
 ## Installation
