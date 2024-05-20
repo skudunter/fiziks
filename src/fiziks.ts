@@ -199,10 +199,10 @@ class Fiziks {
     for (let i = this.subSteps; i > 0; i--) {
       for (let i = 0; i < this.cells.length; i++) {
         const cell = this.cells[i];
-        cell.updatePosition(subDt);
         cell.applyForce(this.gravity);
-        this.applyConstraints(cell);
+        cell.updatePosition(subDt);
         this.applyCollision(cell, i);
+        this.applyConstraints(cell);
       }
       this.updateEngines(subDt);
       this.updateLinks();
@@ -213,13 +213,13 @@ class Fiziks {
     this.cells.forEach((cell) => {
       cell.display();
     });
+    this.rigidBodies.forEach((rigidBody) => {
+      rigidBody.display();
+    });
     this.links.forEach((link) => {
       if (this.displayWireFrame) {
         link.display();
       }
-    });
-    this.rigidBodies.forEach((rigidBody) => {
-      rigidBody.display();
     });
   }
   private updateEngines(dt: number) {
