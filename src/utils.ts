@@ -48,3 +48,17 @@ export function normalise(a:vector):vector{
   let mag = Math.sqrt(a.x**2 + a.y**2);
   return {x:a.x/mag,y:a.y/mag};
 }
+export class GUI{
+  private div:HTMLDivElement;
+  public constructor(){
+    this.div = document.createElement("div");
+    this.div.style.position = "absolute";
+    this.div.style.top = "0";
+    this.div.style.left = "0";
+    this.div.style.color = "white";
+    document.body.appendChild(this.div);
+  }
+  public update(text:string){
+    this.div.innerText = text;
+  }
+}

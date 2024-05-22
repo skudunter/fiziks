@@ -3,10 +3,10 @@ import Cell from "./cell";
 import {
   resizeCanvas,
   clearCanvas,
-  subVec,
-  multVec,
-  normalise,
   getRandomColor,
+  random,
+  ZERO,
+  GUI
 } from "./utils";
 import Link from "./link";
 import Fiziks from "./fiziks";
@@ -16,10 +16,14 @@ let canvas = resizeCanvas(
   document.getElementById("canvas") as HTMLCanvasElement
 );
 let ctx = canvas.getContext("2d");
+let gui = new GUI();
 
 // Constants
 const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
+let isMouseDown = false;
+let mousePos = ZERO;
+let fps = 0;
 
 // Setup main components
 let solver = new Fiziks(WIDTH, HEIGHT, ctx!);
@@ -42,26 +46,42 @@ let links = [
   new Link(cells[4], cells[5], 100, ctx!),
   new Link(cells[5], rect.getCells[0], 100, ctx!),
 ];
-solver.addCircularEngine(4, 0, 50,cells[0]);
+solver.addCircularEngine(4, 0, 50, cells[0]);
 links.forEach((link) => solver.addLink(link));
 cells.forEach((cell) => solver.addCell(cell));
 
 // Main loop
 function loop(timestamp: number) {
   dt = (timestamp - lastTime) / 1000;
-
   lastTime = timestamp;
-  clearCanvas(ctx!, canvas);
 
+  // Calculate and log FPS
+  fps = 1 / dt;
+  gui.update(`FPS: ${Math.floor(fps)}`);
+
+  clearCanvas(ctx!, canvas);
   solver.update(dt);
+
+  if (isMouseDown) {
+    let x = mousePos.x;
+    let y = mousePos.y;
+    solver.addCircle(x, y, random(15, 30), getRandomColor());
+  }
+  
   requestAnimationFrame(loop);
 }
-// on mouse click, do shit
-canvas.addEventListener("click", (e) => {
-  let mousePos = { x: e.x, y: e.y };
-  let delta = subVec(mousePos, rect.getCenter);
-  let force = multVec(normalise(delta), 100);
-  rect.applyForce(force);
-});
 
 loop(0);
+
+canvas.addEventListener("mousedown", (e) => {
+  isMouseDown = true;
+  mousePos = { x: e.offsetX, y: e.offsetY };
+});
+
+canvas.addEventListener("mouseup", () => {
+  isMouseDown = false;
+});
+
+canvas.addEventListener("mousemove", (e) => {
+  mousePos = { x: e.offsetX, y: e.offsetY };
+});

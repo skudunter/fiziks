@@ -38,10 +38,10 @@ class Fiziks {
     this.ctx = ctx;
 
     // Variables
-    this.gravity = { x: 0, y: 0.7 };
+    this.gravity = { x: 0, y: 1 };
     this.hiddenPointColor = "#000000";
     this.subSteps = 4;
-    this.friction = 0.999;
+    this.friction = 1;
     this.displayWireFrame = true;
   }
   public addCell(cell: Cell): Cell {
